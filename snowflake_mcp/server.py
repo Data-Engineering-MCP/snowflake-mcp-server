@@ -346,6 +346,46 @@ class SnowflakeServer(Server):
                         },
                         "required": ["sql_file_path"]
                     }
+                ),
+                Tool(
+                    name="compare_tables",
+                    description="Compare schema and row counts of two Snowflake tables, highlighting column-only differences, type mismatches, and optionally differing rows",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "table1_name": {
+                                "type": "string",
+                                "description": "Name of the first table"
+                            },
+                            "table2_name": {
+                                "type": "string",
+                                "description": "Name of the second table"
+                            },
+                            "database_name": {
+                                "type": "string",
+                                "description": "Database name (optional)"
+                            },
+                            "schema_name": {
+                                "type": "string",
+                                "description": "Schema name (optional)"
+                            },
+                            "columns_to_compare": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "Restrict comparison to these specific columns (optional)"
+                            },
+                            "where_clause": {
+                                "type": "string",
+                                "description": "SQL WHERE clause (without the WHERE keyword) to filter rows in both tables before comparing (optional)"
+                            },
+                            "compare_data": {
+                                "type": "boolean",
+                                "description": "Also diff row-level data on shared/requested columns, capped at 1000 rows (default: false)",
+                                "default": False
+                            }
+                        },
+                        "required": ["table1_name", "table2_name"]
+                    }
                 )
             ]
 
@@ -497,13 +537,33 @@ class SnowflakeServer(Server):
                         text=f"Stored Procedure Creation {status} (execution time: {execution_time:.2f}s):\n{result_str}"
                     )]
                 
+                elif name == "compare_tables":
+                    table1_name = arguments["table1_name"]
+                    table2_name = arguments["table2_name"]
+                    database_name = arguments.get("database_name")
+                    schema_name = arguments.get("schema_name")
+                    columns_to_compare = arguments.get("columns_to_compare")
+                    where_clause = arguments.get("where_clause")
+                    compare_data = arguments.get("compare_data", False)
+                    result = self.db.compare_tables(
+                        table1_name, table2_name,
+                        database_name, schema_name,
+                        columns_to_compare, where_clause, compare_data
+                    )
+                    execution_time = time.time() - start_time
+                    result_str = json.dumps(result, indent=2, default=str)
+                    return [TextContent(
+                        type="text",
+                        text=f"Table Comparison (execution time: {execution_time:.2f}s):\n{result_str}"
+                    )]
+
                 elif name == "inspect_schema":
                     return await self.handle_inspect_schema(arguments)
                 elif name == "analyze_performance":
                     return await self.handle_analyze_performance(arguments)
                 elif name == "check_data_quality":
                     return await self.handle_check_data_quality(arguments)
-                
+
                 else:
                     return [TextContent(
                         type="text",

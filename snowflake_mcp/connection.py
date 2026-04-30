@@ -16,6 +16,7 @@ from tools.InspectSchema import InspectSchema
 from tools.CheckDataQuality import CheckDataQuality
 from tools.AnalyzePerformance import AnalyzePerformance
 from tools.CreateStoredProcedure import CreateStoredProcedure
+from tools.CompareTables import CompareTables
 import snowflake.connector
 from dotenv import load_dotenv
 
@@ -25,7 +26,7 @@ logger = logging.getLogger('snowflake_connection')
 # Load environment variables
 load_dotenv()
 #hre
-class SnowflakeConnection(ProcessReq,ListDatabases,ListSchemas,ListTables,DescribeTables,GetTableSample,GetColumnStats,SearchTables,SearchColumns,GetWarehouseInfo,InspectSchema,CheckDataQuality,AnalyzePerformance,CreateStoredProcedure):
+class SnowflakeConnection(ProcessReq,ListDatabases,ListSchemas,ListTables,DescribeTables,GetTableSample,GetColumnStats,SearchTables,SearchColumns,GetWarehouseInfo,InspectSchema,CheckDataQuality,AnalyzePerformance,CreateStoredProcedure,CompareTables):
     """Manages Snowflake database connections and query execution."""
     
     def __init__(self) -> None:
