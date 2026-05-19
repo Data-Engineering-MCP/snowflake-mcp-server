@@ -1,3 +1,5 @@
-snowflake-connector-python 
+snowflake-connector-python
 python-dotenv
 mcp
+markdown
+reportlab

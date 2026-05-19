@@ -348,6 +348,28 @@ class SnowflakeServer(Server):
                     }
                 ),
                 Tool(
+                    name="convert_md_to_pdf",
+                    description="Convert a Markdown (.md) file or raw markdown string to a PDF document",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "file_path": {
+                                "type": "string",
+                                "description": "Path to a .md file to convert (optional)"
+                            },
+                            "markdown_content": {
+                                "type": "string",
+                                "description": "Raw markdown string to convert (optional)"
+                            },
+                            "output_path": {
+                                "type": "string",
+                                "description": "Destination path for the PDF (optional, defaults to same directory as input file)"
+                            }
+                        },
+                        "required": []
+                    }
+                ),
+                Tool(
                     name="compare_tables",
                     description="Compare schema and row counts of two Snowflake tables, highlighting column-only differences, type mismatches, and optionally differing rows",
                     inputSchema={
@@ -555,6 +577,19 @@ class SnowflakeServer(Server):
                     return [TextContent(
                         type="text",
                         text=f"Table Comparison (execution time: {execution_time:.2f}s):\n{result_str}"
+                    )]
+
+                elif name == "convert_md_to_pdf":
+                    file_path = arguments.get("file_path")
+                    markdown_content = arguments.get("markdown_content")
+                    output_path = arguments.get("output_path")
+                    result = self.db.convert_md_to_pdf(file_path, markdown_content, output_path)
+                    execution_time = time.time() - start_time
+                    result_str = json.dumps(result, indent=2, default=str)
+                    status = "SUCCESS" if result.get("success") else "FAILED"
+                    return [TextContent(
+                        type="text",
+                        text=f"Markdown to PDF Conversion {status} (execution time: {execution_time:.2f}s):\n{result_str}"
                     )]
 
                 elif name == "inspect_schema":
