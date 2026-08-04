@@ -1,0 +1,14 @@
+{
+  "name": "snowflake-mcp-server-marketplace",
+  "description": "Local marketplace exposing the snowflake-mcp-server plugin.",
+  "owner": {
+    "name": "phData"
+  },
+  "plugins": [
+    {
+      "name": "snowflake-mcp-server",
+      "source": "./",
+      "description": "Query, inspect, and profile Snowflake warehouses from Claude Code, with a Snowflake-backed error/resolution log."
+    }
+  ]
+}
