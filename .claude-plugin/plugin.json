@@ -1,0 +1,48 @@
+{
+  "name": "snowflake-mcp-server",
+  "description": "Query, inspect, and profile Snowflake warehouses from Claude Code, with a Snowflake-backed error/resolution log.",
+  "version": "1.0.0",
+  "author": {
+    "name": "phData"
+  },
+  "homepage": "https://github.com/snowflake-mcp/snowflake-mcp-server",
+  "keywords": ["snowflake", "sql", "data-warehouse", "mcp"],
+  "userConfig": {
+    "snowflake_account": {
+      "type": "string",
+      "title": "Snowflake account",
+      "description": "Account identifier, e.g. xy12345.us-east-1",
+      "required": true
+    },
+    "snowflake_user": {
+      "type": "string",
+      "title": "Snowflake user",
+      "description": "Snowflake login username",
+      "required": true
+    },
+    "snowflake_database": {
+      "type": "string",
+      "title": "Default database",
+      "description": "Default Snowflake database to connect to",
+      "required": true
+    },
+    "snowflake_warehouse": {
+      "type": "string",
+      "title": "Warehouse",
+      "description": "Snowflake warehouse to run queries on",
+      "required": true
+    },
+    "snowflake_password": {
+      "type": "string",
+      "title": "Password",
+      "description": "Leave blank to authenticate via SSO/authenticator instead",
+      "sensitive": true
+    },
+    "snowflake_authenticator": {
+      "type": "string",
+      "title": "Authenticator",
+      "description": "Used only when password is blank, e.g. externalbrowser",
+      "default": "externalbrowser"
+    }
+  }
+}

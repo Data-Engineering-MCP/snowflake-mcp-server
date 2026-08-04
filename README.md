@@ -37,9 +37,26 @@ It consist of three main part
 2. MCP Client
 3. MCP Server
 
-## 5. MCP Config Section
+## 3. Install as a Claude Code plugin
 
-The server config is for CURSOR IDE
+This repo is itself a Claude Code plugin: `.claude-plugin/plugin.json` and `.mcp.json` bundle both MCP servers (`snowflake` and `snowflake-error-log`).
+
+1. Clone the repo and install dependencies (covers both servers):
+   ```
+   pip install -r error_log_mcp/requirements.txt
+   ```
+2. Load it locally to try it out:
+   ```
+   claude --plugin-dir /path/to/snowflake-mcp-server
+   ```
+   Claude Code will prompt for your Snowflake account, user, database, and warehouse, plus either a password or an authenticator (default `externalbrowser` for SSO). Sensitive values are stored in your OS keychain, not in plaintext settings.
+3. To keep it installed across sessions without `--plugin-dir`, add it via a marketplace or `claude plugin install`, or symlink the repo into `~/.claude/skills/`.
+
+Both servers assume a `python3` interpreter with the dependencies above importable on `PATH`. If you're on Windows and only have a `python` alias, edit `.mcp.json`'s `command` fields accordingly.
+
+## 4. MCP Config Section (manual / Cursor)
+
+The server config below is for CURSOR IDE, or any MCP client that isn't Claude Code.
 Make sure you create env and install the required dependencies 
 Below is an example of the configuration structure.
 ```
