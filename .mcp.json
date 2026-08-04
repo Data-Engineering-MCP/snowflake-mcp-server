@@ -1,8 +1,12 @@
 {
   "mcpServers": {
     "snowflake": {
-      "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/snowflake_mcp/main.py"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--with-requirements", "${CLAUDE_PLUGIN_ROOT}/error_log_mcp/requirements.txt",
+        "${CLAUDE_PLUGIN_ROOT}/snowflake_mcp/main.py"
+      ],
       "env": {
         "SNOWFLAKE_ACCOUNT": "${user_config.snowflake_account}",
         "SNOWFLAKE_USER": "${user_config.snowflake_user}",
@@ -13,8 +17,12 @@
       }
     },
     "snowflake-error-log": {
-      "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/error_log_mcp/main.py"],
+      "command": "uv",
+      "args": [
+        "run",
+        "--with-requirements", "${CLAUDE_PLUGIN_ROOT}/error_log_mcp/requirements.txt",
+        "${CLAUDE_PLUGIN_ROOT}/error_log_mcp/main.py"
+      ],
       "env": {
         "SNOWFLAKE_ACCOUNT": "${user_config.snowflake_account}",
         "SNOWFLAKE_USER": "${user_config.snowflake_user}",

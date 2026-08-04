@@ -39,20 +39,18 @@ It consist of three main part
 
 ## 3. Install as a Claude Code plugin
 
-This repo is itself a Claude Code plugin: `.claude-plugin/plugin.json` and `.mcp.json` bundle both MCP servers (`snowflake` and `snowflake-error-log`).
+This repo is itself a Claude Code plugin: `.claude-plugin/plugin.json` and `.mcp.json` bundle both MCP servers (`snowflake` and `snowflake-error-log`). No cloning, and no manual `pip install` — `.mcp.json` runs both servers via [`uv run --with-requirements`](https://docs.astral.sh/uv/), which installs dependencies into an ephemeral env automatically on first launch. The only prerequisite is having [`uv`](https://docs.astral.sh/uv/getting-started/installation/) on `PATH`.
 
-1. Clone the repo and install dependencies (covers both servers):
-   ```
-   pip install -r error_log_mcp/requirements.txt
-   ```
-2. Load it locally to try it out:
-   ```
-   claude --plugin-dir /path/to/snowflake-mcp-server
-   ```
-   Claude Code will prompt for your Snowflake account, user, database, and warehouse, plus either a password or an authenticator (default `externalbrowser` for SSO). Sensitive values are stored in your OS keychain, not in plaintext settings.
-3. To keep it installed across sessions without `--plugin-dir`, add it via a marketplace or `claude plugin install`, or symlink the repo into `~/.claude/skills/`.
+On any machine with Claude Code and `uv` installed:
 
-Both servers assume a `python3` interpreter with the dependencies above importable on `PATH`. If you're on Windows and only have a `python` alias, edit `.mcp.json`'s `command` fields accordingly.
+```
+claude plugin marketplace add Data-Engineering-MCP/snowflake-mcp-server
+claude plugin install snowflake-mcp-server@snowflake-mcp-server-marketplace
+```
+
+Claude Code will prompt for your Snowflake account, user, database, and warehouse, plus either a password or an authenticator (default `externalbrowser` for SSO). Sensitive values are stored in your OS keychain, not in plaintext settings. Re-run `/plugin configure snowflake-mcp-server@snowflake-mcp-server-marketplace` any time to change them.
+
+To try local changes before pushing, use `claude --plugin-dir /path/to/snowflake-mcp-server` instead of installing from the marketplace.
 
 ## 4. MCP Config Section (manual / Cursor)
 
